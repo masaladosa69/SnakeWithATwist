@@ -6,9 +6,25 @@ const io = require("socket.io")(http);
 
 app.use(express.static(path.join(__dirname, "../client")));
 
+const players = [];
+
 io.on("connection", (socket) => {
-  socket.on('move', (msg) => {
-    io.emit('move', msg);
+  socket.on("move", (direction) => {
+    io.emit("move", direction);
+  });
+
+  socket.on("ready", (name) => {
+    if (!players.find((player) => player === name)) {
+      players.push(name);
+    }
+
+    if (players.length === 4) {
+      io.emit("start", "start");
+    }
+  });
+
+  socket.on("restart", (msg) => {
+    players = [];
   });
 });
 
