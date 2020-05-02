@@ -13,7 +13,14 @@
       }
       h1 {
         text-align: center;
-    }
+      }
+      form {
+        margin: 0 auto; 
+        width:250px;
+      }
+      button{
+        margin: 0 auto;
+      }
     </style>
   </head>
   <body>
@@ -26,6 +33,9 @@
     >
     </canvas>
     <h1 class="score"></h1>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name"><br><br>
+    <button type="button" id="readyButton">Ready!</button>
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="fruit.js"></script>
