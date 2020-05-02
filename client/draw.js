@@ -36,7 +36,6 @@ let currentDirection = null;
 socket.on("move", function (direction) {
   if (direction !== currentDirection) {
     currentDirection = direction;
-    console.log(direction);
     snake.changeDirection(direction);
   }
 });
