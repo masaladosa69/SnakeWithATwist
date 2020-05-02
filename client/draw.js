@@ -1,6 +1,6 @@
 const canvas = document.querySelector(".canvas");
 const ctx = canvas.getContext("2d");
-const scale = 10;
+const scale = 6;
 const rows = canvas.height / scale;
 const columns = canvas.width / scale;
 const socket = io();
@@ -22,7 +22,8 @@ var snake;
     }
 
     snake.checkCollision();
-    document.querySelector(".score").innerText = snake.total;
+    document.querySelector('.score')
+      .innerText = "Score: " + snake.total;
   }, 250);
 })();
 
