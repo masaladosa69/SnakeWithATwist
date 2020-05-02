@@ -3,6 +3,7 @@ const ctx = canvas.getContext("2d");
 const scale = 10;
 const rows = canvas.height / scale;
 const columns = canvas.width / scale;
+const socket = io();
 var snake;
 
 (function setup() {
@@ -21,13 +22,16 @@ var snake;
     }
 
     snake.checkCollision();
-    document.querySelector('.score')
-      .innerText = snake.total;
-
+    document.querySelector(".score").innerText = snake.total;
   }, 250);
-}());
+})();
 
-window.addEventListener('keydown', ((evt) => {
-  const direction = evt.key.replace('Arrow', '');
+window.addEventListener("keydown", (evt) => {
+  const direction = evt.key.replace("Arrow", "");
   snake.changeDirection(direction);
-}));
+});
+
+socket.on("move", function (direction) {
+  console.log(direction);
+  snake.changeDirection(direction);
+});

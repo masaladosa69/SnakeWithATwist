@@ -1,0 +1,19 @@
+{
+  "name": "SnakeWithATwist",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:masaladosa69/SnakeWithATwist.git",
+  "author": "Will Friebel <will.friebel@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  }
+}

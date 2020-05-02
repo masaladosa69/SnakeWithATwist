@@ -5,24 +5,23 @@ function Snake() {
   this.ySpeed = 0;
   this.total = 0;
   this.tail = [];
+  this.socket = io();
 
-  this.draw = function() {
+  this.draw = function () {
     ctx.fillStyle = "#FFFFFF";
-    for (let i=0; i<this.tail.length; i++) {
-      ctx.fillRect(this.tail[i].x,
-        this.tail[i].y, scale, scale);
+    for (let i = 0; i < this.tail.length; i++) {
+      ctx.fillRect(this.tail[i].x, this.tail[i].y, scale, scale);
     }
 
     ctx.fillRect(this.x, this.y, scale, scale);
-  }
+  };
 
-  this.update = function() {
-    for (let i=0; i<this.tail.length - 1; i++) {
-      this.tail[i] = this.tail[i+1];
+  this.update = function () {
+    for (let i = 0; i < this.tail.length - 1; i++) {
+      this.tail[i] = this.tail[i + 1];
     }
 
-    this.tail[this.total - 1] =
-      { x: this.x, y: this.y };
+    this.tail[this.total - 1] = { x: this.x, y: this.y };
 
     this.x += this.xSpeed;
     this.y += this.ySpeed;
@@ -42,46 +41,48 @@ function Snake() {
     if (this.y < 0) {
       this.y = canvas.height;
     }
-  }
+  };
 
-  this.changeDirection = function(direction) {
-    switch(direction) {
-      case 'Up':
+  this.changeDirection = function (direction) {
+    switch (direction) {
+      case "Up":
+        this.socket.emit("move", "Up");
         this.xSpeed = 0;
         this.ySpeed = -scale * 1;
         break;
-      case 'Down':
+      case "Down":
+        this.socket.emit("move", "Down");
         this.xSpeed = 0;
         this.ySpeed = scale * 1;
         break;
-      case 'Left':
+      case "Left":
+        this.socket.emit("move", "Left");
         this.xSpeed = -scale * 1;
         this.ySpeed = 0;
         break;
-      case 'Right':
+      case "Right":
+        this.socket.emit("move", "Right");
         this.xSpeed = scale * 1;
         this.ySpeed = 0;
         break;
     }
-  }
+  };
 
-  this.eat = function(fruit) {
-    if (this.x === fruit.x &&
-      this.y === fruit.y) {
+  this.eat = function (fruit) {
+    if (this.x === fruit.x && this.y === fruit.y) {
       this.total++;
       return true;
     }
 
     return false;
-  }
+  };
 
-  this.checkCollision = function() {
-    for (var i=0; i<this.tail.length; i++) {
-      if (this.x === this.tail[i].x &&
-        this.y === this.tail[i].y) {
+  this.checkCollision = function () {
+    for (var i = 0; i < this.tail.length; i++) {
+      if (this.x === this.tail[i].x && this.y === this.tail[i].y) {
         this.total = 0;
         this.tail = [];
       }
     }
-  }
+  };
 }
