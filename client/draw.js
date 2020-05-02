@@ -31,7 +31,12 @@ window.addEventListener("keydown", (evt) => {
   snake.changeDirection(direction);
 });
 
+let currentDirection = null;
+
 socket.on("move", function (direction) {
-  console.log(direction);
-  snake.changeDirection(direction);
+  if (direction !== currentDirection) {
+    currentDirection = direction;
+    console.log(direction);
+    snake.changeDirection(direction);
+  }
 });
