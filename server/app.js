@@ -43,7 +43,7 @@ io.on("connection", (socket) => {
       io.emit("start", generateFruitPositions());
     }
   });
-
+ 
   socket.on("failure", (msg) => {
     io.emit("failure", msg);
   });
