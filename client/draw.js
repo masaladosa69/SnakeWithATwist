@@ -22,7 +22,8 @@ let fruitPositions = [];
 
       if (snake.eat(fruit)) {
         if (fruitEatenIndex == fruitPositions.length-1) {
-          document.querySelector("#winBanner").textContent = "YOU SURVIVED COVID-19";
+          document.querySelector("#winBanner").classList.remove("hidden");
+          document.querySelector('#restartButton').classList.remove("hidden");
           allPlayersReady = false;
         } else {
           fruitEatenIndex++;
@@ -40,6 +41,9 @@ let fruitPositions = [];
 const name = document.querySelector("#name");
 const readyButton = document.querySelector("#readyButton");
 readyButton.addEventListener("click", function() {
+  document.querySelector('#nameLabel').classList.add("hidden");
+  name.classList.add("hidden");
+  readyButton.classList.add("hidden");
   socket.emit("ready", name.value);
 });
 
@@ -65,6 +69,13 @@ socket.on("move", function (snakeVector) {
 });
 
 socket.on("start", function(positions) {
+  document.querySelector('.score').classList.remove("hidden");
+  document.querySelector('#nameLabel').classList.add("hidden");
+  name.classList.add("hidden");
+  readyButton.classList.add("hidden");
+  document.querySelector("#winBanner").classList.add("hidden");
+  document.querySelector('#restartButton').classList.add("hidden");
+
   fruitPositions = positions;
   snake = new Snake();
   fruit = new Fruit(fruitPositions[fruitEatenIndex].x, fruitPositions[fruitEatenIndex].y);

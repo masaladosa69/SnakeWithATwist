@@ -25,11 +25,14 @@
         color: red;
         text-align: center;
       }
+      .hidden {
+        display: none;
+      }
     </style>
   </head>
   <body>
     <H1>SNAKE WITH FRIENDS</H1>
-    <div id="winBanner" style="font-size: 40px; color: green; text-align: center;"></div>
+    <div id="winBanner" style="font-size: 50px; color: green; text-align: center;" class="hidden">YOU SURVIVED COVID-19!!!</div>
     <canvas
       class="canvas"
       height="300"
@@ -37,12 +40,12 @@
       style="background-color: #3e3e3e; position: relative;">
     </canvas>
     <div id="lockedDirection" style="font-size: 20px; color: red; text-align: center; margin-top: 10px;"></div>
-    <h1 class="score"></h1>
+    <h1 class="score hidden"></h1>
     <div style="text-align: center;">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name"><br><br>
+      <label for="name" id="nameLabel">Name:</label>
+      <input type="text" id="name"><br><br>
       <button type="button" id="readyButton">Ready!</button>
-      <button type="button" id="restartButton">RESTART</button>
+      <button type="button" id="restartButton" class="hidden">RESTART</button>
     </div>
   </body>
   <script src="/socket.io/socket.io.js"></script>

@@ -4,9 +4,8 @@ const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 let movements = ["Left", "Right", "Up", "Down"];
-const winCountNecessary = 10;
+const winCountNecessary = 5;
 const scale = 6;
-
 
 function getRandomX() {
   return (Math.floor(Math.random() * 50 - 1) + 1) * scale;
