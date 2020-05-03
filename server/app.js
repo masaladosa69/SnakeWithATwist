@@ -26,17 +26,17 @@ function generateFruitPositions() {
 app.use(express.static(path.join(__dirname, "../client")));
 
 let players = [];
-
+console.log("test");
 io.on("connection", (socket) => {
   socket.on("move", (snakeVector) => {
     io.emit("move", snakeVector);
-  });
+  }); 
 
   socket.on("ready", (name) => {
     if (!players.find((player) => player === name)) {
       const plaerObj = {name: name,direction: movements.pop()}
       players.push(plaerObj);
-      io.emit("direction", plaerObj);
+      io.emit("direction", plaerObj); 
     }
 
     if (players.length === 4) {
