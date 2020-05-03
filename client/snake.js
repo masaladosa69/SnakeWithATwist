@@ -26,20 +26,8 @@ function Snake() {
     this.x += this.xSpeed;
     this.y += this.ySpeed;
 
-    if (this.x > canvas.width) {
-      this.x = 0;
-    }
-
-    if (this.y > canvas.height) {
-      this.y = 0;
-    }
-
-    if (this.x < 0) {
-      this.x = canvas.width;
-    }
-
-    if (this.y < 0) {
-      this.y = canvas.height;
+    if ((this.x > canvas.width) || (this.y > canvas.height) || (this.x < 0) || (this.y < 0)) {
+      socket.emit("failure", "failure");
     }
   };
 
@@ -75,8 +63,7 @@ function Snake() {
   this.checkCollision = function () {
     for (var i = 0; i < this.tail.length; i++) {
       if (this.x === this.tail[i].x && this.y === this.tail[i].y) {
-        this.total = 0;
-        this.tail = [];
+        socket.emit("failure", "failure");
       }
     }
   };

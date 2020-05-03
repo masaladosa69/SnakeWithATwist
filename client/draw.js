@@ -1,6 +1,6 @@
 const canvas = document.querySelector(".canvas");
 const ctx = canvas.getContext("2d");
-const scale = 6;
+const scale = 10;
 const rows = canvas.width / scale;
 const columns = canvas.height / scale;
 const socket = io();
@@ -14,6 +14,7 @@ let fruitPositions = [];
 
 (function setup() {
   window.setInterval(() => {
+    console.log("ROWS: " + rows + " COLS: " + columns);
     if (allPlayersReady) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       fruit.draw();
@@ -75,11 +76,18 @@ socket.on("start", function(positions) {
   readyButton.classList.add("hidden");
   document.querySelector("#winBanner").classList.add("hidden");
   document.querySelector('#restartButton').classList.add("hidden");
+  document.querySelector("#failBanner").classList.add("hidden");
 
   fruitPositions = positions;
   snake = new Snake();
   fruit = new Fruit(fruitPositions[fruitEatenIndex].x, fruitPositions[fruitEatenIndex].y);
   allPlayersReady = true;
+});
+
+socket.on("failure", function() {
+  allPlayersReady = false;
+  document.querySelector("#failBanner").classList.remove("hidden");
+  document.querySelector('#restartButton').classList.remove("hidden");
 });
 
 socket.on("direction", function(playerObj) {

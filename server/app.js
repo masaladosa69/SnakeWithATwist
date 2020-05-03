@@ -5,14 +5,14 @@ const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 let movements = ["Left", "Right", "Up", "Down"];
 const winCountNecessary = 5;
-const scale = 6;
+const scale = 10;
 
 function getRandomX() {
-  return (Math.floor(Math.random() * 50 - 1) + 1) * scale;
+  return (Math.floor(Math.random() * 30 - 1) + 1) * scale;
 }
 
 function getRandomY() {
-  return (Math.floor(Math.random() * 50 - 1) + 1) * scale;
+  return (Math.floor(Math.random() * 30 - 1) + 1) * scale;
 }
 
 function generateFruitPositions() {
@@ -42,6 +42,10 @@ io.on("connection", (socket) => {
     if (players.length === 4) {
       io.emit("start", generateFruitPositions());
     }
+  });
+
+  socket.on("failure", (msg) => {
+    io.emit("failure", msg);
   });
 
   socket.on("restart", (msg) => {
