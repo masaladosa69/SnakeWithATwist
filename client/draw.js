@@ -47,6 +47,11 @@ readyButton.addEventListener("click", function() {
   socket.emit("ready", name.value);
 });
 
+const restartButton = document.querySelector("#restartButton");
+restartButton.addEventListener("click", function() {
+  socket.emit("restart", "restart");
+});
+
 window.addEventListener("keydown", (evt) => {
   const direction = evt.key.replace("Arrow", "");
   if (allPlayersReady && evt.key === keyMap[lockedDirection]) {

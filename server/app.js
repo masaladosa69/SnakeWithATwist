@@ -42,7 +42,7 @@ io.on("connection", (socket) => {
       io.emit("direction", plaerObj);
     }
 
-    if (players.length === 2) {
+    if (players.length === 4) {
       io.emit("start", fruitPositions);
     }
   });
