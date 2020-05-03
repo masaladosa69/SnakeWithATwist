@@ -26,7 +26,7 @@ function generateFruitPositions() {
 app.use(express.static(path.join(__dirname, "../client")));
 
 let players = [];
-console.log("test");
+
 io.on("connection", (socket) => {
   socket.on("move", (snakeVector) => {
     io.emit("move", snakeVector);
