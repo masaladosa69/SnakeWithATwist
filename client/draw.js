@@ -1,31 +1,13 @@
-const winCountNecessary = 10;
-
-function getRandomX() {
-  return (Math.floor(Math.random() * columns - 1) + 1) * scale;
-}
-
-function getRandomY() {
-  return (Math.floor(Math.random() * rows - 1) + 1) * scale;
-}
-
-function generateFruitPositions() {
-  const positions = [];
-  for (let i = 0; i < winCountNecessary; i++) {
-    positions[i] = {x: getRandomX(),y: getRandomY()};
-  }
-  return positions;
-}
-
 const canvas = document.querySelector(".canvas");
 const ctx = canvas.getContext("2d");
 const scale = 6;
-const rows = canvas.height / scale;
-const columns = canvas.width / scale;
 const socket = io();
-const fruitPositions = generateFruitPositions();
 var snake;
 var allPlayersReady = false;
 var fruitEatenIndex = 0;
+let lockedDirection = "";
+const keyMap = {Down:"ArrowDown",Up:"ArrowUp",Left:"ArrowLeft",Right:"ArrowRight"};
+let fruitPositions = [{x: 13, y: 123}];
 
 (function setup() {
   snake = new Snake();
@@ -33,7 +15,7 @@ var fruitEatenIndex = 0;
 
   window.setInterval(() => {
     if (allPlayersReady) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, 600, 600);
       fruit.draw();
       snake.update();
       snake.draw();
@@ -67,7 +49,9 @@ readyButton.addEventListener("click", function() {
 
 window.addEventListener("keydown", (evt) => {
   const direction = evt.key.replace("Arrow", "");
-  snake.changeDirection(direction);
+  if (allPlayersReady && evt.key === keyMap[lockedDirection]) {
+    snake.changeDirection(direction);
+  }
 });
 
 let currentDirection = null;
@@ -79,6 +63,14 @@ socket.on("move", function (direction) {
   }
 });
 
-socket.on("start", function() {
+socket.on("start", function(positions) {
+  fruitPositions = positions;
   allPlayersReady = true;
+});
+
+socket.on("direction", function(playerObj) {
+  if (playerObj.name.toLowerCase() === name.value.toLowerCase()) {
+    lockedDirection = playerObj.direction;
+    document.querySelector("#lockedDirection").textContent = "Your direction is " + playerObj.direction.toUpperCase();
+  }
 });

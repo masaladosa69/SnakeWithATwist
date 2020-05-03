@@ -10,6 +10,7 @@
         margin-right: auto;
         display: block;
         width: 600px;
+        height: 600px;
       }
       h1 {
         text-align: center;
@@ -36,10 +37,13 @@
       width="300"
       style="background-color: #3e3e3e; position: relative;">
     </canvas>
+    <div id="lockedDirection" style="font-size: 20px; color: red; text-align: center; margin-top: 10px;"></div>
     <h1 class="score"></h1>
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name"><br><br>
-    <button type="button" id="readyButton">Ready!</button>
+    <div style="text-align: center;">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name"><br><br>
+      <button type="button" id="readyButton">Ready!</button>
+    </div>
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="fruit.js"></script>
