@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
-const movements = ["Left", "Right", "Up", "Down"];
+let movements = ["Left", "Right", "Up", "Down"];
 const winCountNecessary = 10;
 const scale = 6;
 const rows = 600 / scale;
@@ -49,6 +49,7 @@ io.on("connection", (socket) => {
 
   socket.on("restart", (msg) => {
     players = [];
+    movements = ["Left", "Right", "Up", "Down"];
   });
 });
 
