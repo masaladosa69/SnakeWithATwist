@@ -22,10 +22,7 @@ let fruitPositions = [];
 
       if (snake.eat(fruit)) {
         if (fruitEatenIndex == fruitPositions.length-1) {
-          const winBannerContainer = document.querySelector("#winBanner");
-          const winBanner = document.createElement("p");
-          winBanner.textContent = "YOU SURVIVED COVID-19";
-          winBannerContainer.appendChild(winBanner);
+          document.querySelector("#winBanner").textContent = "YOU SURVIVED COVID-19";
           allPlayersReady = false;
         } else {
           fruitEatenIndex++;
@@ -34,8 +31,7 @@ let fruitPositions = [];
       }
 
       snake.checkCollision();
-      document.querySelector('.score')
-        .innerText = "Score: " + snake.total;
+      document.querySelector('.score').innerText = "Score: " + snake.total;
     }
 
   }, 250);
