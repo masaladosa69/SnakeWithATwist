@@ -6,15 +6,14 @@ const io = require("socket.io")(http);
 let movements = ["Left", "Right", "Up", "Down"];
 const winCountNecessary = 10;
 const scale = 6;
-const rows = 600 / scale;
-const columns = 600 / scale;
+
 
 function getRandomX() {
-  return (Math.floor(Math.random() * columns - 1) + 1) * scale;
+  return (Math.floor(Math.random() * 50 - 1) + 1) * scale;
 }
 
 function getRandomY() {
-  return (Math.floor(Math.random() * rows - 1) + 1) * scale;
+  return (Math.floor(Math.random() * 50 - 1) + 1) * scale;
 }
 
 function generateFruitPositions() {
@@ -24,15 +23,14 @@ function generateFruitPositions() {
   }
   return positions;
 }
-const fruitPositions = generateFruitPositions();
 
 app.use(express.static(path.join(__dirname, "../client")));
 
 const players = [];
 
 io.on("connection", (socket) => {
-  socket.on("move", (direction) => {
-    io.emit("move", direction);
+  socket.on("move", (snakeVector) => {
+    io.emit("move", snakeVector);
   });
 
   socket.on("ready", (name) => {
@@ -43,7 +41,7 @@ io.on("connection", (socket) => {
     }
 
     if (players.length === 4) {
-      io.emit("start", fruitPositions);
+      io.emit("start", generateFruitPositions());
     }
   });
 

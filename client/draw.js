@@ -1,21 +1,21 @@
 const canvas = document.querySelector(".canvas");
 const ctx = canvas.getContext("2d");
 const scale = 6;
+const rows = canvas.width / scale;
+const columns = canvas.height / scale;
 const socket = io();
-var snake;
+let snake;
+let fruit;
 var allPlayersReady = false;
 var fruitEatenIndex = 0;
 let lockedDirection = "";
 const keyMap = {Down:"ArrowDown",Up:"ArrowUp",Left:"ArrowLeft",Right:"ArrowRight"};
-let fruitPositions = [{x: 13, y: 123}];
+let fruitPositions = [];
 
 (function setup() {
-  snake = new Snake();
-  fruit = new Fruit(fruitPositions[fruitEatenIndex].x, fruitPositions[fruitEatenIndex].y);
-
   window.setInterval(() => {
     if (allPlayersReady) {
-      ctx.clearRect(0, 0, 600, 600);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       fruit.draw();
       snake.update();
       snake.draw();
@@ -53,23 +53,25 @@ restartButton.addEventListener("click", function() {
 });
 
 window.addEventListener("keydown", (evt) => {
-  const direction = evt.key.replace("Arrow", "");
   if (allPlayersReady && evt.key === keyMap[lockedDirection]) {
-    snake.changeDirection(direction);
+    socket.emit("move", {x: snake.x, y: snake.y, direction: lockedDirection});
   }
 });
 
 let currentDirection = null;
-
-socket.on("move", function (direction) {
-  if (direction !== currentDirection) {
-    currentDirection = direction;
-    snake.changeDirection(direction);
+socket.on("move", function (snakeVector) {
+  if (snakeVector.direction !== currentDirection) {
+    currentDirection = snakeVector.direction;
+    snake.x = snakeVector.x;
+    snake.y = snakeVector.y;
+    snake.changeDirection(snakeVector.direction);
   }
 });
 
 socket.on("start", function(positions) {
   fruitPositions = positions;
+  snake = new Snake();
+  fruit = new Fruit(fruitPositions[fruitEatenIndex].x, fruitPositions[fruitEatenIndex].y);
   allPlayersReady = true;
 });
 

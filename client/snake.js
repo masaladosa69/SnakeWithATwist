@@ -26,42 +26,38 @@ function Snake() {
     this.x += this.xSpeed;
     this.y += this.ySpeed;
 
-    if (this.x > 600) {
+    if (this.x > canvas.width) {
       this.x = 0;
     }
 
-    if (this.y > 600) {
+    if (this.y > canvas.height) {
       this.y = 0;
     }
 
     if (this.x < 0) {
-      this.x = 600;
+      this.x = canvas.width;
     }
 
     if (this.y < 0) {
-      this.y = 600;
+      this.y = canvas.height;
     }
   };
 
   this.changeDirection = function (direction) {
     switch (direction) {
       case "Up":
-        this.socket.emit("move", "Up");
         this.xSpeed = 0;
         this.ySpeed = -scale * 1;
         break;
       case "Down":
-        this.socket.emit("move", "Down");
         this.xSpeed = 0;
         this.ySpeed = scale * 1;
         break;
       case "Left":
-        this.socket.emit("move", "Left");
         this.xSpeed = -scale * 1;
         this.ySpeed = 0;
         break;
       case "Right":
-        this.socket.emit("move", "Right");
         this.xSpeed = scale * 1;
         this.ySpeed = 0;
         break;
