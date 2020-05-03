@@ -1,16 +1,35 @@
+const winCountNecessary = 10;
+
+function getRandomX() {
+  return (Math.floor(Math.random() * columns - 1) + 1) * scale;
+}
+
+function getRandomY() {
+  return (Math.floor(Math.random() * rows - 1) + 1) * scale;
+}
+
+function generateFruitPositions() {
+  const positions = [];
+  for (let i = 0; i < winCountNecessary; i++) {
+    positions[i] = {x: getRandomX(),y: getRandomY()};
+  }
+  return positions;
+}
+
 const canvas = document.querySelector(".canvas");
 const ctx = canvas.getContext("2d");
 const scale = 6;
 const rows = canvas.height / scale;
 const columns = canvas.width / scale;
 const socket = io();
+const fruitPositions = generateFruitPositions();
 var snake;
 var allPlayersReady = false;
+var fruitEatenIndex = 0;
 
 (function setup() {
   snake = new Snake();
-  fruit = new Fruit();
-  fruit.pickLocation();
+  fruit = new Fruit(fruitPositions[fruitEatenIndex].x, fruitPositions[fruitEatenIndex].y);
 
   window.setInterval(() => {
     if (allPlayersReady) {
@@ -20,7 +39,16 @@ var allPlayersReady = false;
       snake.draw();
 
       if (snake.eat(fruit)) {
-        fruit.pickLocation();
+        if (fruitEatenIndex == fruitPositions.length-1) {
+          const winBannerContainer = document.querySelector("#winBanner");
+          const winBanner = document.createElement("p");
+          winBanner.textContent = "YOU SURVIVED COVID-19";
+          winBannerContainer.appendChild(winBanner);
+          allPlayersReady = false;
+        } else {
+          fruitEatenIndex++;
+          fruit.setLocation(fruitPositions[fruitEatenIndex].x, fruitPositions[fruitEatenIndex].y);
+        }
       }
 
       snake.checkCollision();
@@ -35,7 +63,6 @@ const name = document.querySelector("#name");
 const readyButton = document.querySelector("#readyButton");
 readyButton.addEventListener("click", function() {
   socket.emit("ready", name.value);
-  console.log("EMITTING READY MESSAGE FOR USER: " + name.value);
 });
 
 window.addEventListener("keydown", (evt) => {
@@ -53,6 +80,5 @@ socket.on("move", function (direction) {
 });
 
 socket.on("start", function() {
-  console.log("RECEIVED START MESSAGE FROM SERVER");
   allPlayersReady = true;
 });

@@ -73,7 +73,6 @@ function Snake() {
       this.total++;
       return true;
     }
-
     return false;
   };
 
