@@ -31,6 +31,7 @@ io.on("connection", (socket) => {
   socket.on("move", (snakeVector) => {
     io.emit("move", snakeVector);
   }); 
+console.log("TESTING");
 
   socket.on("ready", (name) => {
     if (!players.find((player) => player === name)) {
